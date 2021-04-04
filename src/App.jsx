@@ -12,37 +12,47 @@ function App() {
   }, []);
 
   const getData = async () => {
-    const resData = await axios.get("http://localhost:8080/");
-    console.log("data", resData);
-    setData(resData.data.records);
+    try {
+      const resData = await axios.get("http://localhost:8080/");
+      setData(resData.data.records);
+    } catch (error) {
+      alert("Some error occured while get the listings");
+    }
   };
 
   const uploadFile = async (event) => {
     event.preventDefault();
-    console.log('called', file)
+
     setIsUploading(true);
     let formData = new FormData();
     formData.append("file", file);
-    await axios.post("http://localhost:8080/upload/", formData);
-    setIsUploading(false);
-    getData();
+    try {
+      await axios.post("http://localhost:8080/upload/", formData);
+      setIsUploading(false);
+      getData();
+    } catch (error) {
+      alert("Some error occured while uploading the file");
+    }
   };
 
   const downloadFile = async (id) => {
-    const fileRes = await axios.post("http://localhost:8080/download/", {
-      fileId: id,
-    });
-    console.log('returned ',fileRes)
+    try {
+      const fileRes = await axios.post("http://localhost:8080/download/", {
+        fileId: id,
+      });
 
-    const url = window.URL.createObjectURL(
-      new Blob([Buffer.from(fileRes.data.file.data, 'binary')])
-    );
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", fileRes.data.fileName);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
+      const url = window.URL.createObjectURL(
+        new Blob([Buffer.from(fileRes.data.file.data, "binary")])
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileRes.data.fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      alert("Some error occured while downloading the file");
+    }
   };
   return (
     <div className="container">

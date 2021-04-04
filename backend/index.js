@@ -24,6 +24,7 @@ app.use(upload());
 
 let params = {};
 
+// Endpoint to get listings of data
 app.get("/", async (req, res) => {
     params = {
         TableName: process.env.TABLE_NAME,
@@ -38,10 +39,9 @@ app.get("/", async (req, res) => {
     }
 });
 
+// Endpoint to upload the file
 app.post("/upload", async (req, res) => {
   const file = req.files.file;
-  console.log("file ", file);
-  console.log("type ", typeof file);
 
   // generating a data key from AWS KMS
   params = {
@@ -101,6 +101,7 @@ app.post("/upload", async (req, res) => {
   res.status(200).send("Success");
 });
 
+// Endpoint to download the file
 app.post("/download", async (req, res) => {
   const fileId = req.body.fileId;
 
@@ -114,7 +115,6 @@ app.post("/download", async (req, res) => {
 
   try {
     const record = await dynamodb.get(params).promise();
-    console.log('record', record)
 
     //Fetching the file from S3
     params = {
