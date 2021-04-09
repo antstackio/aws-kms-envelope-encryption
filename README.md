@@ -12,7 +12,7 @@ This is a demo application for implementing envelope encryption using AWS KMS.
 - Create a `.env` file in the backend folder and write below values:\
     `KMS_ARN` arn of CMK\
     `BUCKET_NAME` bucket name\
-    `TABLE_NAME` dynamoDB table name\
+    `TABLE_NAME` dynamoDB table name
     
 - Run `cd backend` in root folder and then `npm start`
 - Run `npm start` in the root folder
